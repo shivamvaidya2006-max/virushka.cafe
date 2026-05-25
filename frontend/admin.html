@@ -141,7 +141,7 @@ function getStatusBadge(status) {
 
 async function loadOrders() {
     try {
-        const response = await fetch("http://127.0.0.1:5000/get-orders");
+        const response = await fetch("https://virushka-cafe-vfsw.onrender.com/get-orders");
         const orders   = await response.json();
 
         const container = document.getElementById("orders-container");
@@ -252,7 +252,7 @@ function updateStats(total, pending, verified, earnings) {
 // ==========================================
 
 async function verifyOrder(orderId) {
-    await fetch("http://127.0.0.1:5000/verify-order", {
+    await fetch("https://virushka-cafe-vfsw.onrender.com/verify-order", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({orderId})
@@ -262,7 +262,7 @@ async function verifyOrder(orderId) {
 }
 
 async function updateStatus(orderId, status) {
-    await fetch("http://127.0.0.1:5000/update-status", {
+    await fetch("https://virushka-cafe-vfsw.onrender.com/update-status", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({orderId, status})
@@ -272,7 +272,7 @@ async function updateStatus(orderId, status) {
 
 async function deleteOrder(orderId) {
     if (!confirm("Delete this order?")) return;
-    await fetch("http://127.0.0.1:5000/delete-order", {
+    await fetch("https://virushka-cafe-vfsw.onrender.com/delete-order", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({orderId})
@@ -298,7 +298,7 @@ function toggleAnalytics() {
 
 async function loadAnalytics() {
     try {
-        const res  = await fetch("http://127.0.0.1:5000/get-analytics");
+        const res  = await fetch("https://virushka-cafe-vfsw.onrender.com/get-analytics");
         const json = await res.json();
 
         const loading = document.getElementById("analytics-loading");
