@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status - Virushka Cafe</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="admin-navbar">
+    <h1>ORDER STATUS</h1>
+    <a href="menu.html" style="color: #ff5722; text-decoration: none; font-weight: 600; font-size: 14px;">+ New Order</a>
+</header>
+
+<!-- FIX: was "status-container" but CSS defines "status-section" -->
+<section class="status-section">
+
+    <div class="status-box">
+
+        <h1>YOUR ORDER</h1>
+
+        <h2 id="current-status">Loading...</h2>
+
+        <div class="status-flow">
+
+            <div class="status" id="step1">Waiting For Approval</div>
+
+            <div class="status" id="step2">Preparing</div>
+
+            <div class="status" id="step3">Ready for Pickup</div>
+
+            <div class="status" id="step4">Completed</div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+const orderId = localStorage.getItem("latestOrderId");
+
+async function loadOrderStatus() {
+
+    try {
+
+        if (!orderId) {
+            document.getElementById("current-status").innerText = "No Order Found";
+            return;
+        }
+
+        const response = await fetch("http://127.0.0.1:5000/get-orders");
+        const orders = await response.json();
+
+        const order = orders.find(item => item._id === orderId);
+
+        if (!order) {
+            document.getElementById("current-status").innerText = "Order Not Found";
+            return;
+        }
+
+        const status = order.orderStatus;
+
+        document.getElementById("current-status").innerText = status;
+
+        // RESET ALL STEPS
+
+        ["step1", "step2", "step3", "step4"].forEach(id => {
+            document.getElementById(id).classList.remove("active");
+        });
+
+        // ACTIVATE STEPS PROGRESSIVELY
+
+        const steps = {
+            "Waiting For Approval": 1,
+            "Preparing": 2,
+            "Ready": 3,
+            "Completed": 4
+        };
+
+        const activeCount = steps[status] || 1;
+
+        for (let i = 1; i <= activeCount; i++) {
+            document.getElementById("step" + i).classList.add("active");
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+loadOrderStatus();
+setInterval(loadOrderStatus, 3000);
+
+</script>
+
+</body>
+</html>
