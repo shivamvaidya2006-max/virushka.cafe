@@ -169,7 +169,7 @@ async function confirmPayment() {
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/place-order", {
+        const response = await fetch("https://virushka-cafe-vfsw.onrender.com/place-order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(orderData)
